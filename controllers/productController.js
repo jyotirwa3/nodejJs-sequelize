@@ -21,3 +21,10 @@ exports.trash = async (req, res) => {
     product.destroy()
     res.redirect("/product")
 }
+
+exports.update = async (req, res) => {
+    const id = req.params.id;
+    const product = await Product.findByPk(id);
+    product = await product.update(req.body);
+    res.render('/product')
+}

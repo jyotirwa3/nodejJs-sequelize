@@ -9,8 +9,7 @@ const { localStrategy } = require('./middlewares/userValidate')
 const userRoute = require('./routes/userRoute');
 const productRoute = require('./routes/productRoute')
 const adminRoute = require('./routes/adminRoute');
-const Product = require('./models/product');
-const { isExist } = require('./middlewares/auth');
+const pageRoute = require('./routes/pageRoute')
 
 /// req data
 app.use(express.json())
@@ -34,32 +33,11 @@ app.use('/api/product', productRoute)
 app.use('/admin', adminRoute)
 
 
-//// views user pages /////
-app.get('/', (req, res) => {
-    res.render('index')
-})
-app.get('/signup', (req, res) => {
-    res.render('sign-up')
-})
-app.get('/login', (req, res) => {
-    res.render('sign-in')
-})
-//// end views user pages /////
 
-//// views product pages /////
+// //// views user pages /////
 
-app.get('/product', isExist, async (req, res) => {
-    let product = await Product.findAll({
-        where: { UserId: req.body.UserId },
-        raw: true,
-    });
-    res.render("product", { product });
-})
 
-app.get('/addproduct', isExist, (req, res) => {
-    res.render('addProduct')
-})
-//// end views user pages /////
+app.use('/', pageRoute)
 
 
 // call db
